@@ -4,6 +4,8 @@ scala:
 jdk:
   - oraclejdk8
 
+sudo: false
+
 cache:
   directories:
     - $HOME/.ivy2/cache
@@ -15,4 +17,4 @@ before_cache:
   - find $HOME/.sbt        -name "*.lock"               -print -delete
 
 script:
-  - sbt ++$TRAVIS_SCALA_VERSION test
+  - sbt ++$TRAVIS_SCALA_VERSION clean coverage test coverageReport
