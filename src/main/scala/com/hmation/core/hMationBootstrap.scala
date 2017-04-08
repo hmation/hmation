@@ -6,9 +6,9 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.StatusCodes._
 import akka.http.scaladsl.server.Directives._
 import akka.stream.{ActorMaterializer, Materializer}
-import com.hmation.core.device.{Shutter, Switch}
 import com.hmation.core.device.Shutter._
 import com.hmation.core.device.Switch.{SwitchStatus, TurnOff, TurnOn}
+import com.hmation.core.device.{Shutter, Switch}
 import spray.json.DefaultJsonProtocol
 
 import scala.concurrent.ExecutionContextExecutor
@@ -34,8 +34,13 @@ trait Service extends Protocols {
   val logger: LoggingAdapter
 
   val routes = {
-
-    logRequestResult("hMation") {
+    {
+      path("") {
+        getFromResource("views/index.html")
+      } ~ {
+        getFromResourceDirectory("views")
+      }
+    } ~ logRequestResult("hMation") {
       (get & pathPrefix("shutter")) {
         complete {
 
