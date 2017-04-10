@@ -29,5 +29,3 @@ libraryDependencies ++= {
 }
 
 mainClass in Compile := Some("com.hmation.core.hMationBootstrap")
-
-resolvers += "Artima Maven Repository" at "http://repo.artima.com/releases"
