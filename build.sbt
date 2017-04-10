@@ -12,6 +12,7 @@ libraryDependencies ++= {
     // Akka
     "com.typesafe.akka" %% "akka-actor" % akkaVersion,
     "com.typesafe.akka" %% "akka-stream" % akkaVersion,
+    "org.scalatest" %% "scalatest" % scalatestVersion,
 
     // Akka Goodies
     "ch.qos.logback" % "logback-classic" % logbackVersion,
@@ -22,9 +23,8 @@ libraryDependencies ++= {
     "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpVersion,
 
     // Testing
-    "com.typesafe.akka" %% "akka-testkit" % akkaVersion % "test",
-    "org.scalatest" %% "scalatest" % scalatestVersion % "test",
-    "org.mockito" % "mockito-core" % mockitoVersion % "test"
+    // TODO add test classifier, currently IntelliJ isn't able to see
+    "com.typesafe.akka" %% "akka-testkit" % akkaVersion % "test"
   )
 }
 

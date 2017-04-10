@@ -14,6 +14,9 @@ object Shutter {
   object Open extends MoveShutter(0)
 
   case class ShutterStatus(position: Int) {
+
+    if(position < 0 || position > 100) throw new IllegalArgumentException("Position has to be in <0,100> range.")
+
     def isClosed = position == 100
     def isOpened = !isClosed
     def isFullyOpened = position == 0
