@@ -18,3 +18,9 @@ before_cache:
 
 script:
   - sbt ++$TRAVIS_SCALA_VERSION clean coverage test coverageReport
+
+before_install:
+  - pip install --user codecov
+
+after_success:
+  - codecov
