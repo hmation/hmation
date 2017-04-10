@@ -24,7 +24,7 @@ class Shutter(var shutterStatus: ShutterStatus) extends Actor with ActorLogging 
   override def receive: Receive = {
     case GetStatus => {
       log.info(s"In position: ${shutterStatus.position}")
-      sender() ! ShutterStatus(1)
+      sender() ! ShutterStatus(shutterStatus.position)
     }
     case MoveShutter(desiredPosition) => {
       log.info(s"In position: ${shutterStatus.position}, moving to: $desiredPosition")
