@@ -1,0 +1,4 @@
+GET     /                       com.hmation.api.HomeController.index
+
+# Map static resources from public
+GET     /assets/*file           controllers.Assets.at(path="/public", file)
