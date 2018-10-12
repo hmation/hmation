@@ -1,6 +1,6 @@
 language: scala
 scala:
-  - 2.12.1
+  - 2.12.7
 jdk:
   - oraclejdk8
 
@@ -17,10 +17,4 @@ before_cache:
   - find $HOME/.sbt        -name "*.lock"               -print -delete
 
 script:
-  - sbt ++$TRAVIS_SCALA_VERSION clean coverage test coverageReport
-
-before_install:
-  - pip install --user codecov
-
-after_success:
-  - codecov
+  - sbt ++$TRAVIS_SCALA_VERSION clean test
