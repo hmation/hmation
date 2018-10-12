@@ -1,14 +1,24 @@
 package com.hmation.core
 
 import akka.actor.ActorSystem
-import akka.event.Logging
-import akka.stream.ActorMaterializer
+import com.hmation.core.device.Shutter
+import com.hmation.core.device.Shutter.{CloseShutter, MoveShutter, OpenShutter}
 
 object hMationBootstrap extends App {
-  implicit val system = ActorSystem()
-  implicit val executor = system.dispatcher
-  implicit val materializer = ActorMaterializer()
+  val system = ActorSystem("hMation")
+  val shutter = system.actorOf(Shutter.props(), "shutter")
 
-  implicit val logger = Logging(system, getClass)
+  shutter ! MoveShutter(34)
+  shutter ! "print"
+  shutter ! MoveShutter(78)
+  shutter ! "print"
+  shutter ! CloseShutter
+  shutter ! "print"
+  shutter ! OpenShutter
+  shutter ! "print"
+  shutter ! CloseShutter
+  shutter ! "print"
 
+  Thread.sleep(10000)
+  system.terminate()
 }
