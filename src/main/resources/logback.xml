@@ -8,7 +8,7 @@
         </encoder>
     </appender>
 
-    <root level="${LOGGING_LEVEL:-DEBUG}">
+    <root level="${LOGGING_LEVEL:-INFO}">
         <appender-ref ref="CONSOLE"/>
     </root>
 

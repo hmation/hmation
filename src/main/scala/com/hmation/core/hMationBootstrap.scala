@@ -1,12 +1,18 @@
 package com.hmation.core
 
 import akka.actor.ActorSystem
+import com.hmation.blebox.BleBoxExtension
 import com.hmation.core.device.Shutter
 import com.hmation.core.device.Shutter.{CloseShutter, MoveShutter, OpenShutter}
 
 object hMationBootstrap extends App {
   val system = ActorSystem("hMation")
-  val shutter = system.actorOf(Shutter.props(), "shutter")
+  val connectorRegistry = system.actorOf(ConnectorRegistry.props, "connector-registry")
+
+  // fixme: should be automatically done
+  system.extension(BleBoxExtension).configure(connectorRegistry)
+
+  val shutter = system.actorOf(Shutter.props(connectorRegistry))
 
   shutter ! MoveShutter(34)
   shutter ! "print"

@@ -1,24 +1,27 @@
+import Versions._
+
 scalaVersion := "2.12.7"
 name := """hMation"""
 
 libraryDependencies ++= {
-  val akkaVersion = "2.5.17"
-  val logbackVersion = "1.2.3"
-  val scalatestVersion = "3.0.1"
 
   Seq(
     // Akka
-    "com.typesafe.akka" %% "akka-actor" % akkaVersion,
-    "com.typesafe.akka" %% "akka-persistence" % akkaVersion,
-    "com.typesafe.akka" %% "akka-stream" % akkaVersion,
-    "org.scalatest" %% "scalatest" % scalatestVersion,
+    "com.typesafe.akka" %% "akka-actor" % akkaV,
+    "com.typesafe.akka" %% "akka-persistence" % akkaV,
+
+    // Akka Http
+    "com.typesafe.akka" %% "akka-http" % akkaHttpV,
+    "com.typesafe.akka" %% "akka-stream" % akkaV,
+
+    "org.scalatest" %% "scalatest" % scalatestV,
 
     // Akka Goodies
-    "ch.qos.logback" % "logback-classic" % logbackVersion,
-    "com.typesafe.akka" %% "akka-slf4j" % akkaVersion,
+    "ch.qos.logback" % "logback-classic" % logbackV,
+    "com.typesafe.akka" %% "akka-slf4j" % akkaV,
 
     // Testing
-    "com.typesafe.akka" %% "akka-testkit" % akkaVersion % "test"
+    "com.typesafe.akka" %% "akka-testkit" % akkaV % "test"
   )
 }
 
