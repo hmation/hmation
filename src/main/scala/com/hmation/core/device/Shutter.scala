@@ -28,6 +28,7 @@ object Shutter {
   case object ShutterOpened extends ShutterEvent(0)
   case class ShutterMoved(position: Int) extends ShutterEvent(position)
 
+  // state
   case class ShutterState(
     connectorType: String,
     position: Int) {

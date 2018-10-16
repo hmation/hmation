@@ -1,6 +1,7 @@
 package com.hmation.blebox
 
 import akka.actor.{ActorRef, ActorSystem, ExtendedActorSystem, Extension, ExtensionId, ExtensionIdProvider}
+import akka.http.scaladsl.Http
 import com.hmation.blebox.device.BleBoxShutter
 import com.hmation.core.ConnectorRegistry.Register
 
@@ -20,9 +21,8 @@ class BleBoxExtension(val actorSystem: ActorSystem) extends Extension {
   def configure(connectorRegistry: ActorRef) {
 
     // create and register worker actors
-    val shutter: ActorRef = actorSystem.actorOf(BleBoxShutter.props, "blebox-shutter-connector")
+    val shutter: ActorRef = actorSystem.actorOf(BleBoxShutter.props(Http(actorSystem)), "blebox-shutter-connector")
 
     connectorRegistry ! Register("blebox-shutter-connector", shutter)
   }
-
 }
