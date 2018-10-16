@@ -21,17 +21,16 @@ object Switch {
 
 class Switch(var status: SwitchStatus) extends Actor with ActorLogging {
   override def receive: Receive = {
-    case GetStatus => {
+    case GetStatus =>
       log.info(s"Status: $status")
       sender() ! status
-    }
-    case TurnOn => {
+
+    case TurnOn =>
       log.info(s"Switching from: $status to ${SwitchStatus.ON}")
       status = SwitchStatus.ON
-    }
-    case TurnOff => {
+
+    case TurnOff =>
       log.info(s"Switching from: $status to ${SwitchStatus.OFF}")
       status = SwitchStatus.OFF
-    }
   }
 }
