@@ -3,15 +3,16 @@ package com.hmation.core
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
 import com.hmation.blebox.BleBoxExtension
-import com.hmation.core.device.Shutter
-import com.hmation.core.device.Shutter.{CloseShutter, MoveShutter, OpenShutter}
+import com.hmation.core.device.ShutterAggregate
+import com.hmation.core.device.ShutterAggregate.{CloseShutter, MoveShutter, OpenShutter}
 
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
 object hMationBootstrap
   extends App
-    with hMationBootstrapRoutes.Default {
+    with hMationBootstrapRoutes.Default
+    with IdGeneration.Default {
 
   implicit def actorSystem: ActorSystem = ActorSystem("hMation")
   implicit def actorMaterializer: ActorMaterializer = ActorMaterializer()
@@ -21,7 +22,8 @@ object hMationBootstrap
   // fixme: should be automatically done
   actorSystem.extension(BleBoxExtension).configure(connectorRegistry)
 
-  val shutter = actorSystem.actorOf(Shutter.props(connectorRegistry))
+  private val id = idGenerator.nextId()
+  val shutter = actorSystem.actorOf(ShutterAggregate.props(id, connectorRegistry), s"user-$id")
 
   shutter ! MoveShutter(34)
   shutter ! "print"

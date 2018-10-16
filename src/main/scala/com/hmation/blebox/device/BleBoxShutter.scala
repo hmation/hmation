@@ -5,7 +5,7 @@ import akka.http.scaladsl.HttpExt
 import akka.http.scaladsl.model.{HttpRequest, HttpResponse, StatusCodes}
 import akka.stream.{ActorMaterializer, ActorMaterializerSettings}
 import akka.util.ByteString
-import com.hmation.core.device.Shutter.{CloseShutter, MoveShutter, OpenShutter}
+import com.hmation.core.device.ShutterAggregate.{CloseShutter, MoveShutter, OpenShutter}
 
 object BleBoxShutter {
   def props(http: HttpExt) = Props(classOf[BleBoxShutter], http)

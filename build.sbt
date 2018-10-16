@@ -19,6 +19,9 @@ libraryDependencies ++= {
     "ch.qos.logback" % "logback-classic" % logbackV,
     "com.typesafe.akka" %% "akka-slf4j" % akkaV,
 
+    // Goodies
+    "com.softwaremill.common" %% "id-generator" % idGeneratorV,
+    
     // Testing
     "org.scalatest" %% "scalatest" % scalatestV % "test",
     "com.typesafe.akka" %% "akka-testkit" % akkaV % "test"
