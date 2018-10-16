@@ -12,15 +12,18 @@ libraryDependencies ++= {
 
     // Akka Http
     "com.typesafe.akka" %% "akka-http" % akkaHttpV,
+    "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpV,
     "com.typesafe.akka" %% "akka-stream" % akkaV,
 
-    "org.scalatest" %% "scalatest" % scalatestV,
-
-    // Akka Goodies
+    // Loging
     "ch.qos.logback" % "logback-classic" % logbackV,
     "com.typesafe.akka" %% "akka-slf4j" % akkaV,
 
+    // Goodies
+    "com.softwaremill.common" %% "id-generator" % idGeneratorV,
+    
     // Testing
+    "org.scalatest" %% "scalatest" % scalatestV % "test",
     "com.typesafe.akka" %% "akka-testkit" % akkaV % "test"
   )
 }
