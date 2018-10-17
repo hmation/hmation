@@ -41,7 +41,7 @@ object ShutterAggregate {
     def isFullyOpened = position == 0
   }
 
-  private val SNAPSHOT_INTERVAL = 1000
+  private val SnapshotInterval = 1000
 }
 
 class ShutterAggregate(id: String, connectorRegistry: ActorRef) extends PersistentActor with ActorLogging {
@@ -69,21 +69,21 @@ class ShutterAggregate(id: String, connectorRegistry: ActorRef) extends Persiste
         updateShutterState(event)
         shutterConnector ! moveShutterCommand
         context.system.eventStream.publish(event)
-        if (lastSequenceNr % SNAPSHOT_INTERVAL == 0 && lastSequenceNr != 0) saveSnapshot(shutterState)
+        if (lastSequenceNr % SnapshotInterval == 0 && lastSequenceNr != 0) saveSnapshot(shutterState)
       }
     case CloseShutter =>
-      persist(ShutterClosed) { event ⇒
+      persist(ShutterClosed) { event =>
         updateShutterState(event)
         shutterConnector ! CloseShutter
         context.system.eventStream.publish(event)
-        if (lastSequenceNr % SNAPSHOT_INTERVAL == 0 && lastSequenceNr != 0) saveSnapshot(shutterState)
+        if (lastSequenceNr % SnapshotInterval == 0 && lastSequenceNr != 0) saveSnapshot(shutterState)
       }
     case OpenShutter =>
-      persist(ShutterOpened) { event ⇒
+      persist(ShutterOpened) { event =>
         updateShutterState(event)
         shutterConnector ! OpenShutter
         context.system.eventStream.publish(event)
-        if (lastSequenceNr % SNAPSHOT_INTERVAL == 0 && lastSequenceNr != 0) saveSnapshot(shutterState)
+        if (lastSequenceNr % SnapshotInterval == 0 && lastSequenceNr != 0) saveSnapshot(shutterState)
       }
     case PrintStatus => log.info(s"state: $shutterState")
     case GetStatus => sender() ! (persistenceId, shutterState.connectorType, shutterState.position)
