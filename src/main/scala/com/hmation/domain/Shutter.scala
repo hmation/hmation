@@ -1,4 +1,4 @@
-package com.hmation.core.device
+package com.hmation.domain
 
 import java.util.concurrent.TimeUnit.SECONDS
 
@@ -7,44 +7,52 @@ import akka.pattern.ask
 import akka.persistence.{PersistentActor, SnapshotOffer}
 import akka.util.Timeout
 import com.hmation.core.ConnectorRegistry.Lookup
-import com.hmation.core.device.ShutterAggregate._
+import com.hmation.domain.Shutter.Commands._
+import com.hmation.domain.Shutter.Config._
+import com.hmation.domain.Shutter.Events._
+import com.hmation.domain.Shutter.State._
 
 import scala.concurrent.Await
 
-object ShutterAggregate {
+object Shutter {
 
-  def props(id: String, connectorRegistry: ActorRef) = Props(classOf[ShutterAggregate], id, connectorRegistry)
+  def props(id: String, connectorRegistry: ActorRef) = Props(classOf[Shutter], id, connectorRegistry)
 
-  // commands
-  trait ShutterCommand
-  case class MoveShutter(position: Int) extends ShutterCommand
-  object CloseShutter extends MoveShutter(100)
-  object OpenShutter extends MoveShutter(0)
-  case object PrintStatus extends ShutterCommand
-  case object GetStatus extends ShutterCommand
-
-  // events
-  class ShutterEvent(val newPosition: Int)
-  case object ShutterClosed extends ShutterEvent(100)
-  case object ShutterOpened extends ShutterEvent(0)
-  case class ShutterMoved(position: Int) extends ShutterEvent(position)
-
-  // state
-  case class ShutterState(
-    connectorType: String,
-    position: Int) {
-
-    if (position < 0 || position > 100) throw new IllegalArgumentException("Position has to be in <0,100> range.")
-
-    def isClosed = position == 100
-    def isOpened = !isClosed
-    def isFullyOpened = position == 0
+  object Commands {
+    trait ShutterCommand
+    case class MoveShutter(position: Int) extends ShutterCommand
+    object CloseShutter extends MoveShutter(100)
+    object OpenShutter extends MoveShutter(0)
+    case object PrintStatus extends ShutterCommand
+    case object GetStatus extends ShutterCommand
   }
 
-  private val SnapshotInterval = 1000
+  object Events {
+    class ShutterEvent(val newPosition: Int)
+    case object ShutterClosed extends ShutterEvent(100)
+    case object ShutterOpened extends ShutterEvent(0)
+    case class ShutterMoved(position: Int) extends ShutterEvent(position)
+  }
+
+  object State {
+    case class ShutterState(
+      connectorType: String,
+      position: Int) {
+
+      if (position < 0 || position > 100) throw new IllegalArgumentException("Position has to be in <0,100> range.")
+
+      def isClosed = position == 100
+      def isOpened = !isClosed
+      def isFullyOpened = position == 0
+    }
+  }
+
+  object Config {
+    val SnapshotInterval = 1000
+  }
 }
 
-class ShutterAggregate(id: String, connectorRegistry: ActorRef) extends PersistentActor with ActorLogging {
+class Shutter(id: String, connectorRegistry: ActorRef) extends PersistentActor with ActorLogging {
 
   override def persistenceId = id
 
@@ -64,6 +72,7 @@ class ShutterAggregate(id: String, connectorRegistry: ActorRef) extends Persiste
   }
 
   override def receiveCommand: Receive = {
+
     case moveShutterCommand: MoveShutter =>
       persist(ShutterMoved(moveShutterCommand.position)) { event ⇒
         updateShutterState(event)
@@ -71,6 +80,7 @@ class ShutterAggregate(id: String, connectorRegistry: ActorRef) extends Persiste
         context.system.eventStream.publish(event)
         if (lastSequenceNr % SnapshotInterval == 0 && lastSequenceNr != 0) saveSnapshot(shutterState)
       }
+
     case CloseShutter =>
       persist(ShutterClosed) { event =>
         updateShutterState(event)
@@ -78,6 +88,7 @@ class ShutterAggregate(id: String, connectorRegistry: ActorRef) extends Persiste
         context.system.eventStream.publish(event)
         if (lastSequenceNr % SnapshotInterval == 0 && lastSequenceNr != 0) saveSnapshot(shutterState)
       }
+
     case OpenShutter =>
       persist(ShutterOpened) { event =>
         updateShutterState(event)
@@ -85,10 +96,14 @@ class ShutterAggregate(id: String, connectorRegistry: ActorRef) extends Persiste
         context.system.eventStream.publish(event)
         if (lastSequenceNr % SnapshotInterval == 0 && lastSequenceNr != 0) saveSnapshot(shutterState)
       }
+
     case PrintStatus => log.info(s"state: $shutterState")
+
     case GetStatus => sender() ! (persistenceId, shutterState.connectorType, shutterState.position)
   }
 
-  def updateShutterState(event: ShutterEvent): Unit =
+  def updateShutterState(event: ShutterEvent): Unit = {
+    log.info(s"Updating state from event: $event")
     shutterState = ShutterState(shutterState.connectorType, event.newPosition)
+  }
 }

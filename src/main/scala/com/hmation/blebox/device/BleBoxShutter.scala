@@ -6,7 +6,7 @@ import akka.http.scaladsl.model.{HttpRequest, HttpResponse, StatusCodes}
 import akka.pattern.pipe
 import akka.stream.{ActorMaterializer, ActorMaterializerSettings}
 import akka.util.ByteString
-import com.hmation.core.device.ShutterAggregate.{CloseShutter, MoveShutter, OpenShutter}
+import com.hmation.domain.Shutter.Commands._
 
 object BleBoxShutter {
   def props(http: HttpExt) = Props(classOf[BleBoxShutter], http)
@@ -35,5 +35,7 @@ class BleBoxShutter(val http: HttpExt) extends Actor with ActorLogging {
     case resp @ HttpResponse(code, _, _, _) =>
       log.warning("Request failed, response code: " + code)
       resp.discardEntityBytes()
+
+    case any @ _ => log.error(s"$any")
   }
 }

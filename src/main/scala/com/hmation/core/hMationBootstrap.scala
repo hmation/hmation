@@ -3,8 +3,8 @@ package com.hmation.core
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
 import com.hmation.blebox.BleBoxExtension
-import com.hmation.core.device.ShutterAggregate
-import com.hmation.core.device.ShutterAggregate.{CloseShutter, MoveShutter, OpenShutter}
+import com.hmation.domain.Shutter
+import com.hmation.domain.Shutter.Commands._
 
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
@@ -23,17 +23,11 @@ object hMationBootstrap
   actorSystem.extension(BleBoxExtension).configure(connectorRegistry)
 
   private val id = idGenerator.nextId()
-  val shutter = actorSystem.actorOf(ShutterAggregate.props(id, connectorRegistry), s"user-$id")
+  val shutter = actorSystem.actorOf(Shutter.props(id, connectorRegistry), s"shutter-$id")
 
   shutter ! MoveShutter(34)
   shutter ! "print"
   shutter ! MoveShutter(78)
-  shutter ! "print"
-  shutter ! CloseShutter
-  shutter ! "print"
-  shutter ! OpenShutter
-  shutter ! "print"
-  shutter ! CloseShutter
   shutter ! "print"
 
   Await.result(actorSystem.whenTerminated, Duration.Inf)

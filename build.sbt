@@ -21,7 +21,8 @@ libraryDependencies ++= {
 
     // Goodies
     "com.softwaremill.common" %% "id-generator" % idGeneratorV,
-    
+    "org.fusesource.leveldbjni" % "leveldbjni-all" % "1.8",
+
     // Testing
     "org.scalatest" %% "scalatest" % scalatestV % "test",
     "com.typesafe.akka" %% "akka-testkit" % akkaV % "test"

@@ -3,8 +3,9 @@ package com.hmation.core.device
 import akka.testkit.{TestKit, TestProbe}
 import com.hmation.core.ConnectorRegistry.Lookup
 import com.hmation.core.test.common.AkkaActorTest
+import com.hmation.domain.Shutter
 
-class ShutterAggregateTest extends AkkaActorTest {
+class ShutterTest extends AkkaActorTest {
 
   override def afterAll: Unit = {
     TestKit.shutdownActorSystem(system)
@@ -18,7 +19,7 @@ class ShutterAggregateTest extends AkkaActorTest {
     "lookUp connectorRegistry upon creation" in {
 
       // when
-      system.actorOf(ShutterAggregate.props("someId", connectorRegistry.testActor))
+      system.actorOf(Shutter.props("someId", connectorRegistry.testActor))
 
       // then
       connectorRegistry.expectMsgClass(classOf[Lookup])

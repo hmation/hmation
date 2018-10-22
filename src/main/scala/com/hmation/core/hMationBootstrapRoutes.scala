@@ -1,6 +1,6 @@
 package com.hmation.core
 
-import akka.actor.ActorSystem
+import akka.actor.{ActorRef, ActorSystem}
 import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
 import com.hmation.infrastructure.rest.shutter.ShutterRoutes
@@ -10,6 +10,8 @@ object hMationBootstrapRoutes {
   trait Requires {
     implicit def actorSystem: ActorSystem
     implicit def actorMaterializer: ActorMaterializer
+
+    implicit val connectorRegistry: ActorRef
   }
 
   trait Default
