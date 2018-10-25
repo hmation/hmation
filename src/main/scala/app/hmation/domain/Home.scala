@@ -1,11 +1,14 @@
 package app.hmation.domain
 
+import akka.actor.Props
 import akka.persistence.{PersistentActor, SnapshotOffer}
 import app.hmation.domain.Home.Commands._
 import app.hmation.domain.Home.Events._
 import app.hmation.domain.Home.State._
 
 object Home {
+
+  def props = Props(classOf[Home])
 
   object Commands {
     sealed trait HomeCommand
