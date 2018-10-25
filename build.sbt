@@ -18,10 +18,12 @@ libraryDependencies ++= {
     // Loging
     "ch.qos.logback" % "logback-classic" % logbackV,
     "com.typesafe.akka" %% "akka-slf4j" % akkaV,
+    "org.slf4j" % "slf4j-api" % slf4jV,
 
     // Goodies
     "com.softwaremill.common" %% "id-generator" % idGeneratorV,
-    "org.fusesource.leveldbjni" % "leveldbjni-all" % "1.8",
+    "org.fusesource.leveldbjni" % "leveldbjni-all" % leveldbV,
+    "com.typesafe" % "config" % configV,
 
     // Testing
     "org.scalatest" %% "scalatest" % scalatestV % "test",
