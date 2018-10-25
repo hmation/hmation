@@ -31,6 +31,8 @@ libraryDependencies ++= {
   )
 }
 
-mainClass in Compile := Some("com.hmation.core.hMationBootstrap")
+mainClass in Compile := Some("app.hmation.core.hMationBootstrap")
 
 resolvers += "Typesafe repository plugin" at "https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/"
+
+cancelable in Global := true
