@@ -1,4 +1,4 @@
-package app.hmation.core.test.common
+package app.hmation.test.common
 
 import akka.actor.ActorSystem
 import akka.testkit.{ImplicitSender, TestKit}

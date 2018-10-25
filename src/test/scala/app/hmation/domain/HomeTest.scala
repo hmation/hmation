@@ -15,7 +15,7 @@ class HomeTest extends AkkaActorTest {
   "Home" should {
     val homeEntity = system.actorOf(Home.props)
 
-    "lookUp connectorRegistry upon creation" in {
+    "store a device and be able to get it out" in {
 
       // when
       homeEntity ! AddDevice(deviceId)

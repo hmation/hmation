@@ -1,9 +1,8 @@
-package app.hmation.core.device
+package app.hmation.domain
 
 import akka.testkit.{TestKit, TestProbe}
 import app.hmation.core.ConnectorRegistry.Lookup
 import app.hmation.core.test.common.AkkaActorTest
-import app.hmation.domain.Shutter
 
 class ShutterTest extends AkkaActorTest {
 

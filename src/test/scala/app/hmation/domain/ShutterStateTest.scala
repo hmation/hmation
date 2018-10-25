@@ -1,4 +1,4 @@
-package app.hmation.core.device
+package app.hmation.domain
 
 import app.hmation.core.test.common.AkkaActorTest
 import app.hmation.domain.Shutter.State.ShutterState

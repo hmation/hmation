@@ -1,8 +1,7 @@
-package app.hmation.core.device
+package app.hmation.domain
 
 import akka.testkit.TestActorRef
 import app.hmation.core.test.common.AkkaActorTest
-import app.hmation.domain.Switch
 import app.hmation.domain.Switch.SwitchStatus
 
 class SwitchTest extends AkkaActorTest {
