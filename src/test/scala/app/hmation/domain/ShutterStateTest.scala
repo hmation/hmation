@@ -1,7 +1,7 @@
 package app.hmation.domain
 
-import app.hmation.core.test.common.AkkaActorTest
 import app.hmation.domain.Shutter.State.ShutterState
+import app.hmation.test.common.AkkaActorTest
 
 class ShutterStateTest extends AkkaActorTest {
 

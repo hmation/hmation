@@ -1,8 +1,8 @@
 package app.hmation.domain
 
 import akka.testkit.TestKit
-import app.hmation.core.test.common.AkkaActorTest
 import app.hmation.domain.Home.Commands.{AddDevice, GetDevice}
+import app.hmation.test.common.AkkaActorTest
 
 class HomeTest extends AkkaActorTest {
 
