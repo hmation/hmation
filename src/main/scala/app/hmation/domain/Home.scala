@@ -1,6 +1,6 @@
 package app.hmation.domain
 
-import akka.actor.Props
+import akka.actor.{ActorLogging, Props}
 import akka.persistence.{PersistentActor, SnapshotOffer}
 import app.hmation.domain.Home.Commands._
 import app.hmation.domain.Home.Events._
@@ -8,7 +8,7 @@ import app.hmation.domain.Home.State._
 
 object Home {
 
-  def props = Props(classOf[Home])
+  def props(homeId: String) = Props(classOf[Home], homeId)
 
   object Commands {
     sealed trait HomeCommand
@@ -38,27 +38,34 @@ object Home {
   }
 }
 
-class Home extends PersistentActor {
+class Home(homeId: String) extends PersistentActor
+  with ActorLogging{
 
   private var state = HomeState()
 
-  override def persistenceId: String = "home"
+  override def persistenceId: String = homeId
 
   override def receiveRecover: Receive = {
-    case event: HomeEvent => state = state.add(event)
-    case SnapshotOffer(_, snapshot: HomeState) => state = snapshot
+    case event: HomeEvent =>
+      state = state.add(event)
+      log.info(s"Replay event for home=[$persistenceId]")
+    case SnapshotOffer(_, snapshot: HomeState) =>
+      state = snapshot
+      log.info(s"Use snapshot of home=[$persistenceId]")
   }
 
   override def receiveCommand: Receive = {
 
     case GetDevice(id) =>
       sender() ! state.devices(id)
+      log.info(s"Get state of home=[$persistenceId]")
 
     case AddDevice(deviceId) =>
       persist(DeviceAdded(deviceId)) {
         event =>
           state = state.add(event)
           context.system.eventStream.publish(event)
+          log.info(s"Add device to home=[$persistenceId]")
           if (lastSequenceNr != 0 && lastSequenceNr % 1000 == 0) saveSnapshot(state)
       }
   }

@@ -1,21 +1,15 @@
 package app.hmation.core
 
-import akka.actor.ActorSystem
-import akka.stream.ActorMaterializer
 import app.hmation.blebox.BleBoxExtension
-import app.hmation.domain.Shutter
+import app.hmation.domain.Home.Commands.AddDevice
 import app.hmation.domain.Shutter.Commands.MoveShutter
-
-import scala.concurrent.Await
-import scala.concurrent.duration.Duration
+import app.hmation.domain.{Home, Shutter}
 
 object hMationBootstrap
   extends App
-    with hMationBootstrapRoutes.Default
-    with IdGeneration.Default {
-
-  implicit def actorSystem: ActorSystem = ActorSystem("hMation")
-  implicit def actorMaterializer: ActorMaterializer = ActorMaterializer()
+    with hMationRoutes.Default
+    with IdGeneration.Default
+    with Akka.Default {
 
   val connectorRegistry = actorSystem.actorOf(ConnectorRegistry.props, "connector-registry")
 
@@ -23,12 +17,18 @@ object hMationBootstrap
   actorSystem.extension(BleBoxExtension).configure(connectorRegistry)
 
   private val id = idGenerator.nextId()
-  val shutter = actorSystem.actorOf(Shutter.props(id, connectorRegistry), s"shutter-$id")
+  val shutter = actorSystem.actorOf(Shutter.props(id, connectorRegistry))
 
   shutter ! MoveShutter(34)
   shutter ! "print"
   shutter ! MoveShutter(78)
   shutter ! "print"
 
-  Await.result(actorSystem.whenTerminated, Duration.Inf)
+  Thread.sleep(3000)
+
+  val home = actorSystem.actorOf(Home.props("myHome"))
+
+  home ! AddDevice("someShutter")
+  home ! AddDevice("someShutter2")
+  home ! AddDevice("someShutter3")
 }

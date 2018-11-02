@@ -1,19 +1,19 @@
 package app.hmation.domain
 
-import akka.actor.Props
+import app.hmation.core.Akka
 import app.hmation.domain.Home.State.MaybeHome
 
 import scala.concurrent.Future
 
-trait HomeService extends AkkaConfiguration {
+trait HomeService extends Akka.Provides {
 
   import akka.pattern.ask
 
-  private val homeEntity = actorRefFactory.actorOf(Props[Home])
+  private def homeEntity(homeId: String) = actorSystem.actorOf(Home.props(homeId))
 
-  def getDevice(id: String): Future[MaybeHome[String]] =
-    (homeEntity ? Home.Commands.GetDevice(id)).mapTo[MaybeHome[String]]
+  def getDevice(homeId: String): Future[MaybeHome[String]] =
+    (homeEntity(homeId) ? Home.Commands.GetDevice(homeId)).mapTo[MaybeHome[String]]
 
-  def addDevice(id: String): Future[String] =
-    (homeEntity ? Home.Commands.AddDevice(id)).mapTo[String]
+  def addDevice(homeId: String): Future[String] =
+    (homeEntity(homeId) ? Home.Commands.AddDevice(homeId)).mapTo[String]
 }

@@ -23,6 +23,7 @@ libraryDependencies ++= {
     // Goodies
     "com.softwaremill.common" %% "id-generator" % idGeneratorV,
     "org.fusesource.leveldbjni" % "leveldbjni-all" % leveldbV,
+    "org.iq80.leveldb"  % "leveldb" % "0.7",
     "com.typesafe" % "config" % configV,
 
     // Testing

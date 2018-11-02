@@ -11,7 +11,4 @@ trait ShutterJsonSupport extends SprayJsonSupport {
   import DefaultJsonProtocol._
 
   implicit val shutterDtoJsonFormat = jsonFormat3(ShutterDto)
-  //  implicit val shuttersDtoJsonFormat = jsonFormat1(ShuttersDto)
-
-  //  implicit val actionPerformedJsonFormat = jsonFormat1(ActionPerformed)
 }

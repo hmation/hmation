@@ -1,18 +1,17 @@
 package app.hmation.domain
 
-import java.util.concurrent.TimeUnit.SECONDS
-
 import akka.actor.{ActorLogging, ActorRef, Props}
 import akka.pattern.ask
 import akka.persistence.{PersistentActor, SnapshotOffer}
 import akka.util.Timeout
-import app.hmation.core.ConnectorRegistry.Lookup
+import app.hmation.core.ConnectorRegistry.Api.Lookup
 import app.hmation.domain.Shutter.Commands._
 import app.hmation.domain.Shutter.Config._
 import app.hmation.domain.Shutter.Events._
 import app.hmation.domain.Shutter.State._
 
 import scala.concurrent.Await
+import scala.concurrent.duration._
 
 object Shutter {
 

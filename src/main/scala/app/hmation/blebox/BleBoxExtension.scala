@@ -3,7 +3,7 @@ package app.hmation.blebox
 import akka.actor.{ActorRef, ActorSystem, ExtendedActorSystem, Extension, ExtensionId, ExtensionIdProvider}
 import akka.http.scaladsl.Http
 import app.hmation.blebox.device.BleBoxShutter
-import app.hmation.core.ConnectorRegistry.Register
+import app.hmation.core.ConnectorRegistry.Api.Register
 
 object BleBoxExtension
   extends ExtensionId[BleBoxExtension]
