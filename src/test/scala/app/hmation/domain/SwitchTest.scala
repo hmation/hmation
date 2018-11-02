@@ -6,7 +6,6 @@ import app.hmation.test.common.AkkaActorTest
 
 class SwitchTest extends AkkaActorTest {
 
-
   "Switch" should {
 
     // given

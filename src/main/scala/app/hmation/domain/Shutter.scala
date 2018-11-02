@@ -73,7 +73,7 @@ class Shutter(id: String, connectorRegistry: ActorRef) extends PersistentActor w
   override def receiveCommand: Receive = {
 
     case moveShutterCommand: MoveShutter =>
-      persist(ShutterMoved(moveShutterCommand.position)) { event ⇒
+      persist(ShutterMoved(moveShutterCommand.position)) { event =>
         updateShutterState(event)
         shutterConnector ! moveShutterCommand
         context.system.eventStream.publish(event)

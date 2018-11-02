@@ -1,13 +1,12 @@
 package app.hmation.domain
 
+import akka.pattern.ask
 import app.hmation.core.Akka
 import app.hmation.domain.Home.State.MaybeHome
 
 import scala.concurrent.Future
 
 trait HomeService extends Akka.Provides {
-
-  import akka.pattern.ask
 
   private def homeEntity(homeId: String) = actorSystem.actorOf(Home.props(homeId))
 
