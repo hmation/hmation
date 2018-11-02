@@ -5,6 +5,8 @@ import app.hmation.domain.Home.Commands.{AddDevice, GetDevice}
 import app.hmation.test.common.AkkaActorTest
 import com.softwaremill.id.pretty.PrettyIdGenerator
 
+import scala.concurrent.duration._
+
 class HomeTest extends AkkaActorTest {
 
   val deviceId = "deviceId"
@@ -23,7 +25,7 @@ class HomeTest extends AkkaActorTest {
 
       // then
       homeEntity ! GetDevice(deviceId)
-      expectMsg(deviceId)
+      expectMsg(10 seconds, deviceId)
     }
   }
 }
