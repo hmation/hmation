@@ -1,14 +1,10 @@
 package app.hmation.domain
 
-import akka.testkit.{TestKit, TestProbe}
+import akka.testkit.TestProbe
 import app.hmation.core.ConnectorRegistry.Api.Lookup
 import app.hmation.test.common.AkkaActorTest
 
 class ShutterTest extends AkkaActorTest {
-
-  override def afterAll: Unit = {
-    TestKit.shutdownActorSystem(system)
-  }
 
   "Shutter" should {
 

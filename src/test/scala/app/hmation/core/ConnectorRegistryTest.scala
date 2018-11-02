@@ -1,15 +1,11 @@
 package app.hmation.core
 
 import akka.actor.DeadLetter
-import akka.testkit.{TestKit, TestProbe}
+import akka.testkit.TestProbe
 import app.hmation.core.ConnectorRegistry.Api.{Lookup, Register, Unregister}
 import app.hmation.test.common.AkkaActorTest
 
 class ConnectorRegistryTest extends AkkaActorTest {
-
-  override def afterAll: Unit = {
-    TestKit.shutdownActorSystem(system)
-  }
 
   "ConnectorRegistry" should {
     val registry = system.actorOf(ConnectorRegistry.props)
