@@ -7,6 +7,6 @@ import spray.json.JsValue
 final case class HomeDto(name: String, data: JsValue)
 
 trait HomeJsonSupport extends SprayJsonSupport {
-  ł
+
   implicit val homeDtoJsonFormat = jsonFormat2(HomeDto)
 }
