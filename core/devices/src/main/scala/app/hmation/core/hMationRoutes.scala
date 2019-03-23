@@ -25,7 +25,7 @@ object hMationRoutes {
       with HomeRoutes {
 
     private val interface = "0.0.0.0"
-    private val port = 8080
+    private val port = 8070
 
     Http().bindAndHandle(shutterRoutes ~ homeRoutes, interface, port)
     log.info(s"Server online at http://${interface}:${port}/")

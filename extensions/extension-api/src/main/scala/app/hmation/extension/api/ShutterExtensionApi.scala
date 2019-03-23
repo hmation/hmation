@@ -1,11 +1,24 @@
 package app.hmation.extension.api
 
-trait ShutterExtensionApi {
+import akka.actor.Actor
 
-  def moveShutter(position: Int)
+object ShutterExtensionApi {
 
-  def closeShutter
+  object commands {
 
-  def openShutter
+    trait ShutterExtensionCommand
+    case class MoveShutter(position: Int) extends ShutterExtensionCommand
+    object CloseShutter extends MoveShutter(100)
+    object OpenShutter extends MoveShutter(0)
+
+  }
+
+  object events {
+
+    trait ShutterExtensionEvent
+
+  }
+
+  trait ShutterExtension extends Actor
 
 }

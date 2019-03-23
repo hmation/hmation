@@ -1,9 +1,11 @@
 package app.hmation.core
 
-import app.hmation.blebox.BleBoxExtension
+import java.util.ServiceLoader
+
 import app.hmation.devices.Home.Commands.AddDevice
 import app.hmation.devices.Shutter.Commands.MoveShutter
 import app.hmation.devices.{Home, Shutter}
+import app.hmation.extension.api.{HmationExtension, HmationExtensionId}
 
 object hMationBootstrap
   extends App
@@ -13,8 +15,9 @@ object hMationBootstrap
 
   val connectorRegistry = actorSystem.actorOf(ConnectorRegistry.props, "connector-registry")
 
-  // fixme: should be automatically done
-  actorSystem.extension(BleBoxExtension).configure(connectorRegistry)
+  ServiceLoader load classOf[HmationExtensionId[HmationExtension]] forEach {
+    extension => actorSystem.extension(extension).configure(connectorRegistry)
+  }
 
   private val id = idGenerator.nextId()
   val shutter = actorSystem.actorOf(Shutter.props(id, connectorRegistry))

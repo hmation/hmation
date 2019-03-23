@@ -1,16 +1,22 @@
 package app.hmation.extension.api
 
-trait ExtensionRegistryApi {
+import akka.actor.{ActorRef, Extension, ExtensionId, ExtensionIdProvider}
 
-  object Api {
+trait HmationExtension
+  extends Extension {
+  def configure(connectorRegistry: ActorRef)
+}
 
-    case class Register(name: String, actor: ActorRef)
+trait HmationExtensionId[EXTENSION <: HmationExtension]
+  extends ExtensionId[EXTENSION]
+    with ExtensionIdProvider
 
-    case class Unregister(name: String)
+object ExtensionRegistryApi {
 
-    case class Lookup(name: String)
+  case class Register(name: String, actor: ActorRef)
 
-  }
+  case class Unregister(name: String)
 
+  case class Lookup(name: String)
 
 }

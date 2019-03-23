@@ -62,6 +62,7 @@ class Shutter(id: String, connectorRegistry: ActorRef) extends PersistentActor w
     log.info(s"Created: $persistenceId")
     log.info(s"Actor Selection: ${context.self.path}")
     implicit val timeout = Timeout(1, SECONDS)
+    // todo: make it not failing when the connector is not there
     shutterConnector = Await.result(connectorRegistry ? Lookup("blebox-shutter-connector"), timeout.duration).asInstanceOf[ActorRef]
   }
 

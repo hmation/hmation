@@ -1,5 +1,9 @@
 import versions._
 
+dependsOn(
+  modules.extensions.`extension-api`
+)
+
 libraryDependencies ++= {
 
   Seq(
